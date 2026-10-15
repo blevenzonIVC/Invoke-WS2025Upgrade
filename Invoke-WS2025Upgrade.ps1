@@ -16,10 +16,15 @@
     The snapshot is NOT removed. Delete it yourself after the soak period.
 
 .EXAMPLE
-    $g = Get-Credential CORP\svc_upgrade
+    # vCenter login (snapshots, ISO mount, power, guest OS type)
+    $vc = Get-Credential administrator@vsphere.local
+    # Windows local admin on the target servers (WinRM)
+    $g  = Get-Credential CORP\svc_upgrade
+
     .\Invoke-WS2025Upgrade.ps1 -VCenter vcenter.corp.ivcinc.com -VMName APP01,APP02 `
-        -ContentLibraryIso 'WS2025_x64' -GuestCredential $g -ScanOnly
+        -ContentLibraryIso 'WS2025_x64' -VCenterCredential $vc -GuestCredential $g -ScanOnly
     # or: -IsoPath '[DS-ISO] Windows/WS2025_x64.iso'
+    # If -VCenterCredential is omitted, Connect-VIServer tries Windows passthrough and prompts if that fails.
 #>
 [CmdletBinding()]
 param(
